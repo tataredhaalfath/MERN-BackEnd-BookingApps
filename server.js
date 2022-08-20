@@ -7,9 +7,15 @@ const app = express();
 // connection to MongoDB
 const connectDB = require("./database/db");
 connectDB();
+
+// import router
+const categoryRouter = require("./router/categoryRouter");
+
 // setting cors & morgan
 app.use(cors());
 app.use(logger("dev"));
+app.use(express.json()); //menerima data json
+app.use(express.urlencoded({ extended: false })); // menerima input form url-encoded
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -29,6 +35,9 @@ const port = 3000;
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+
+// url
+app.use("/api/v1/category", categoryRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
