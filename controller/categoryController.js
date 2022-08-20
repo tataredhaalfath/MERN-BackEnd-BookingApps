@@ -43,13 +43,27 @@ module.exports = {
       }
 
       const category = await Category.findById(req.params.id);
-
-      updates.forEach((update) => {
-        category[update] = req.body[update];
-      }); //update category
+      category
+        ? updates.forEach((update) => {
+            category[update] = req.body[update];
+          }) //update category
+        : res.status(404).json({ message: "Category Not Found!" });
 
       await category.save();
 
+      return res.status(200).json(category);
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  },
+
+  destroyCategory: async (req, res) => {
+    try {
+      const category = await Category.findByIdAndDelete(req.params.id);
+
+      category
+        ? res.status(200).json({ message: "Category Deleted" })
+        : res.status(404).json({ message: "Category Not Found!" });
       return res.status(200).json(category);
     } catch (error) {
       res.status(500).send(error.message);
