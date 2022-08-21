@@ -2,6 +2,16 @@ const Bank = require("../models/Bank");
 const path = require("path");
 const fs = require("fs-extra");
 module.exports = {
+  get: async (req, res) => {
+    try {
+      const banks = await Bank.find();
+      banks.length === 0
+        ? res.status(404).json({ message: "Data Bank Not Found" })
+        : res.json(banks);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
   create: async (req, res) => {
     try {
       console.log(req.body);

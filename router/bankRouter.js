@@ -5,5 +5,6 @@ const { uploadSingle } = require("../middleware/multer");
 
 router.post("/", uploadSingle, bankController.create);
 router.patch("/:id", uploadSingle, bankController.update);
+router.get("/", uploadSingle, bankController.get);
 
 module.exports = router;
