@@ -1,0 +1,65 @@
+[33mcommit 815a15a84597411c60cae4a144f0a79915ec4e50[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: Redha <tataredhaalfath13@gmail.com>
+Date:   Sun Aug 21 18:52:27 2022 +0700
+
+    delete bank
+
+[33mcommit b4b6380bfeac4428838df93aed171126039198ee[m
+Author: Redha <tataredhaalfath13@gmail.com>
+Date:   Sun Aug 21 18:35:47 2022 +0700
+
+    read bank
+
+[33mcommit ec50c607728eba769b422f70d991b9e353efa5a8[m
+Author: Redha <tataredhaalfath13@gmail.com>
+Date:   Sun Aug 21 18:31:32 2022 +0700
+
+    update bank
+
+[33mcommit 8f955217d5a6a56411b2fd2e8ca739ebdc30b418[m
+Author: Redha <tataredhaalfath13@gmail.com>
+Date:   Sun Aug 21 17:26:47 2022 +0700
+
+    create bank
+
+[33mcommit fcec99185ccd73949b1449b6a2e0b6c78e0a4866[m
+Author: Redha <tataredhaalfath13@gmail.com>
+Date:   Sun Aug 21 16:53:42 2022 +0700
+
+    setup multer
+
+[33mcommit 06f51e6f888aff600444230a7f96afd321a44536[m
+Author: Redha <tataredhaalfath13@gmail.com>
+Date:   Sat Aug 20 22:34:20 2022 +0700
+
+    delete category
+
+[33mcommit 28ccd19a9ea5a810cf207755ede23a459db2bc92[m
+Author: Redha <tataredhaalfath13@gmail.com>
+Date:   Sat Aug 20 22:19:45 2022 +0700
+
+    update category
+
+[33mcommit 534e78744f20360c75a129b7aa16503fc1adfee5[m
+Author: Redha <tataredhaalfath13@gmail.com>
+Date:   Sat Aug 20 21:55:08 2022 +0700
+
+    read category
+
+[33mcommit f58c208a5e94078d4cfad95e2be9b4c15f31ba16[m
+Author: Redha <tataredhaalfath13@gmail.com>
+Date:   Sat Aug 20 21:47:09 2022 +0700
+
+    crate category
+
+[33mcommit 0386f19c484dbf84519522e61fb996b65afa06ea[m
+Author: Redha <tataredhaalfath13@gmail.com>
+Date:   Sat Aug 20 20:59:13 2022 +0700
+
+    create database model schema
+
+[33mcommit acbcdd2631733ed0a7c35f7654c330baac28f7ce[m
+Author: Redha <tataredhaalfath13@gmail.com>
+Date:   Sat Aug 20 16:41:10 2022 +0700
+
+    initial commit

@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
-const { ObjectId } = monggose.Schema();
+const { ObjectId } = mongoose.Schema;
 const itemSchema = mongoose.Schema({
   itemName: {
     type: String,
     required: [true, "Please Input Item Name!"],
   },
-
   unit: {
     type: String,
     requied: [true, "Please Input Unit!"],
