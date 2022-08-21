@@ -1,7 +1,7 @@
 const Category = require("../models/Category");
 
 module.exports = {
-  addCategory: async (req, res) => {
+  create: async (req, res) => {
     try {
       console.log(req.body);
 
@@ -12,22 +12,22 @@ module.exports = {
       await category.save();
       res.status(201).json(category);
     } catch (error) {
-      res.status(500).json({message: error.message});
+      res.status(500).json({ message: error.message });
     }
   },
 
-  getCategory: async (req, res) => {
+  get: async (req, res) => {
     try {
       const categories = await Category.find();
       categories.length === 0
         ? res.status(404).json({ message: "Data Category is Empty" })
         : res.status(200).json(categories);
     } catch (error) {
-      res.status(500).json({message: error.message});
+      res.status(500).json({ message: error.message });
     }
   },
 
-  updateCategory: async (req, res) => {
+  update: async (req, res) => {
     try {
       console.log(req.body);
       const updates = Object.keys(req.body);
@@ -53,11 +53,11 @@ module.exports = {
 
       return res.status(200).json(category);
     } catch (error) {
-      res.status(500).json({message: error.message});
+      res.status(500).json({ message: error.message });
     }
   },
 
-  destroyCategory: async (req, res) => {
+  delete: async (req, res) => {
     try {
       const category = await Category.findByIdAndDelete(req.params.id);
 
@@ -66,7 +66,7 @@ module.exports = {
         : res.status(404).json({ message: "Category Not Found!" });
       return res.status(200).json(category);
     } catch (error) {
-      res.status(500).json({message: error.message});
+      res.status(500).json({ message: error.message });
     }
   },
 };
