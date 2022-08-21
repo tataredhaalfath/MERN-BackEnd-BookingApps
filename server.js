@@ -2,6 +2,7 @@
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
+const path = require("path");
 
 const app = express();
 // connection to MongoDB
@@ -14,9 +15,12 @@ const categoryRouter = require("./router/categoryRouter");
 // setting cors & morgan
 app.use(cors());
 app.use(logger("dev"));
+
+// post json & url-encoded
 app.use(express.json()); //menerima data json
 app.use(express.urlencoded({ extended: false })); // menerima input form url-encoded
 
+// Cors
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -29,6 +33,9 @@ app.use(function (req, res, next) {
   );
   next();
 });
+
+// public file
+app.use(express.static(path.join(__dirname, "public")));
 
 const port = 3000;
 
