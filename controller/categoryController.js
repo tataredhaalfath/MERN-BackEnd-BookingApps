@@ -12,7 +12,7 @@ module.exports = {
       await category.save();
       res.status(201).json(category);
     } catch (error) {
-      res.status(400).json(error.message);
+      res.status(500).json({message: error.message});
     }
   },
 
@@ -23,7 +23,7 @@ module.exports = {
         ? res.status(404).json({ message: "Data Category is Empty" })
         : res.status(200).json(categories);
     } catch (error) {
-      res.status(500).send(error.message);
+      res.status(500).json({message: error.message});
     }
   },
 
@@ -53,7 +53,7 @@ module.exports = {
 
       return res.status(200).json(category);
     } catch (error) {
-      res.status(500).send(error.message);
+      res.status(500).json({message: error.message});
     }
   },
 
@@ -66,7 +66,7 @@ module.exports = {
         : res.status(404).json({ message: "Category Not Found!" });
       return res.status(200).json(category);
     } catch (error) {
-      res.status(500).send(error.message);
+      res.status(500).json({message: error.message});
     }
   },
 };

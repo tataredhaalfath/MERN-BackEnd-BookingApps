@@ -5,6 +5,8 @@ const connectDB = async () => {
     const conn = await mongoose.connect("mongodb://localhost:27017/bookingDB", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
     });
 
     console.log(`MongoDB Connected :  ${conn.connection.host}`);
