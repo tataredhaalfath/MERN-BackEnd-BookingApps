@@ -72,4 +72,20 @@ module.exports = {
       res.status(500).json({ message: error.message });
     }
   },
+
+  delete: async (req, res) => {
+    try {
+      const bank = await Bank.findByIdAndDelete(req.params.id);
+      if (!bank) {
+        return res.status(404).json({ message: "Bank Not Found!" });
+      }
+      await bank
+        .remove()
+        .then(() => fs.unlink(path.join(`public/${bank.imageUrl}`))); // delete from database then delete image file
+
+      return res.status(200).json({ messaeg: "Bank Has Been Deleted!" });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
 };
