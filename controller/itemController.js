@@ -5,6 +5,25 @@ const fs = require("fs-extra");
 const path = require("path");
 
 module.exports = {
+  get: async (req, res) => {
+    try {
+      const items = await Item.find()
+        .populate({
+          path: "image",
+          select: "id imageUrl",
+        })
+        .populate({
+          path: "category",
+          select: "id categoryName",
+        }); // populate to relation db
+
+      items.lengh === 0
+        ? res.status(404).json({ message: "Data Item Is Empty" })
+        : res.json({ items });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  },
   create: async (req, res) => {
     try {
       console.log(req.body);
