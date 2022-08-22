@@ -4,6 +4,20 @@ const fs = require("fs-extra");
 const path = require("path");
 
 module.exports = {
+  get: async (req, res) => {
+    try {
+      const features = await Feature.find().populate({
+        path: "item",
+        select: "_id itemName",
+      });
+
+      features.length === 0
+        ? res.status(404).json({ message: "Data Feature Is Empty!" })
+        : res.json({ features });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  },
   create: async (req, res) => {
     try {
       console.log(req.body);
@@ -13,7 +27,7 @@ module.exports = {
         return res.status(403).json({ message: "Image Not Found!" });
       }
 
-      const feature = await Feature.create({
+      const feature = new Feature({
         featureName,
         qty,
         item,
@@ -26,6 +40,8 @@ module.exports = {
       }
       itemDB.feature.push({ _id: feature._id });
       await itemDB.save();
+
+      feature.save();
 
       return res.json({ feature });
     } catch (error) {
