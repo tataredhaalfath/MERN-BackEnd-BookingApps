@@ -13,6 +13,7 @@ connectDB();
 const categoryRouter = require("./router/categoryRouter");
 const bankRouter = require("./router/bankRouter");
 const itemRouter = require("./router/itemRouter");
+const featureRouter = require("./router/featureRouter");
 
 // setting cors & morgan
 app.use(cors());
@@ -49,6 +50,7 @@ app.get("/", (req, res) => {
 app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/bank", bankRouter);
 app.use("/api/v1/item", itemRouter);
+app.use("/api/v1/item/feature", featureRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
