@@ -113,5 +113,39 @@ module.exports = {
       }
     }
   },
-  delete: async (req, res) => {},
+  delete: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const feature = await Feature.findOne({ _id: id });
+      if (!feature) {
+        return res.status(404).json({ message: "Feature Not Found!" });
+      }
+
+      const item = await Item.findOne({ _id: feature.item });
+      if (!item) {
+        return res.status(404).json({ message: "Item Not Found!" });
+      }
+
+      function deleteItemFeature() {
+        item.feature.forEach(async (itemFeature) => {
+          if (itemFeature._id.toString() == feature._id.toString()) {
+            item.feature.pull({
+              _id: feature._id,
+            }); /* delete data field feature in item table where related with table feature , 
+            pull is  is used to remove an element from collection by given key and return the pulled element. */
+            await item.save();
+          }
+        });
+      }
+
+      await feature
+        .remove()
+        .then(() => deleteItemFeature())
+        .then(() => fs.unlink(path.join(`public/${feature.imageUrl}`)));
+
+      return res.status(200).json({ message: "Feature Has Been Deleted!" });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
 };
