@@ -45,7 +45,7 @@ const itemSchema = mongoose.Schema({
       ref: "Feature",
     },
   ],
-  Info: [
+  info: [
     {
       type: ObjectId,
       ref: "Info",

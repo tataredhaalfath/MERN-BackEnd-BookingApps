@@ -41,18 +41,18 @@ module.exports = {
       itemDB.feature.push({ _id: feature._id });
       await itemDB.save();
 
-      feature.save();
-
+      await feature.save();
       return res.json({ feature });
     } catch (error) {
-      await fs.unlink(path.join(`public/images/${req.file.filename}`));
+      if (req.file) {
+        await fs.unlink(path.join(`public/images/${req.file.filename}`));
+      }
       switch (error.message) {
         case "Item Not Found":
-          res.status(404).json({ message: error.message });
-          break;
+          return res.status(404).json({ message: error.message });
+
         default:
-          res.status(500).json({ message: error.message });
-          break;
+          return res.status(500).json({ message: error.message });
       }
     }
   },
@@ -128,7 +128,7 @@ module.exports = {
 
       function deleteItemFeature() {
         item.feature.forEach(async (itemFeature) => {
-          if (itemFeature._id.toString() == feature._id.toString()) {
+          if (itemFeature._id.toString() === feature._id.toString()) {
             item.feature.pull({
               _id: feature._id,
             }); /* delete data field feature in item table where related with table feature , 
