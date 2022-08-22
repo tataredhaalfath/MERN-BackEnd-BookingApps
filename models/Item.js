@@ -7,7 +7,7 @@ const itemSchema = mongoose.Schema({
   },
   unit: {
     type: String,
-    requied: [true, "Please Input Unit!"],
+    required: [true, "Please Input Unit!"],
   },
   itemPrice: {
     type: Number,

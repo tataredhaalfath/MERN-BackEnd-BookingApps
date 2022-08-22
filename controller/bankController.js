@@ -48,12 +48,12 @@ module.exports = {
       });
 
       if (!isValidOperation) {
-        return res.status(403).json({ message: "Invalid Key Parameter" });
+        throw Error("Invalid Key Parameter");
       }
 
       const bank = await Bank.findById(req.params.id);
       if (!bank) {
-        return res.status(404).json({ message: "Bank Not Found!" });
+        throw Error("Bank Not Found!");
       }
 
       if (req.file) {
@@ -69,7 +69,13 @@ module.exports = {
       return res.json(bank);
     } catch (error) {
       await fs.unlink(path.join(`public/images/${req.file.filename}`)); // unlink image file when data doesn input into database
-      res.status(500).json({ message: error.message });
+      if (error.message === "Bank Not Found!") {
+        res.status(404).json({ message: error.message });
+      } else if (error.message === "Invalid Key Parameter") {
+        res.status(403).json({ message: error.message });
+      } else {
+        res.status(500).json({ message: error.message });
+      }
     }
   },
 
@@ -83,7 +89,7 @@ module.exports = {
         .remove()
         .then(() => fs.unlink(path.join(`public/${bank.imageUrl}`))); // delete from database then delete image file
 
-      return res.status(200).json({ messaeg: "Bank Has Been Deleted!" });
+      return res.status(200).json({ message: "Bank Has Been Deleted!" });
     } catch (error) {
       res.status(500).json({ message: error.message });
     }
