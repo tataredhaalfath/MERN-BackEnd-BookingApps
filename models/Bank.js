@@ -12,7 +12,7 @@ const bankSchema = new mongoose.Schema({
   },
   accountHolder: {
     type: String,
-    required: [true, "Please Input Accouint Holder!"],
+    required: [true, "Please Input Account Holder!"],
   },
   imageUrl: {
     type: String,

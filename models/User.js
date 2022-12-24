@@ -23,22 +23,22 @@ const userSchema = new mongoose.Schema(
       },
     },
     role: {
-      type: Strng,
+      type: String,
       enum: ["owner", "admin"],
       default: "owner",
     },
     password: {
-      type: Strng,
+      type: String,
       required: [true, "Please Input Password!"],
       minlength: 5,
       trim: true,
     },
     passwordConfirm: {
-      type: Strng,
+      type: String,
       required: [true, "Please Input Password Confirm!"],
     },
     phoneNumber: {
-      type: Strng,
+      type: String,
       required: [true, "Please Input Phone Number!"],
       validate(value) {
         if (this.password !== this.passwordConfirm) {

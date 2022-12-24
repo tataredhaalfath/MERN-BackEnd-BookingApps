@@ -27,7 +27,6 @@ module.exports = {
 
   create: async (req, res, next) => {
     try {
-      console.log(req.body);
       const { itemName, itemPrice, unit, location, description, category } =
         req.body;
 
@@ -80,7 +79,6 @@ module.exports = {
 
   update: async (req, res) => {
     try {
-      console.log(req.body);
       const updates = Object.keys(req.body);
       const allowedUpdated = [
         "itemName",
@@ -118,7 +116,6 @@ module.exports = {
 
       //delete old image and save new image
       if (req.files.length) {
-        console.log("ada image");
         item.image.forEach(async (fileImg) => {
           await Image.findOne({ _id: fileImg._id }) // find image from table image
             .then((image) => {
@@ -132,7 +129,6 @@ module.exports = {
         });
 
         for (let i = 0; i < req.files.length; i++) {
-          console.log(req.files[i]);
           const imageSave = await Image.create({
             imageUrl: `images/${req.files[i].filename}`,
           });
@@ -141,7 +137,6 @@ module.exports = {
           await item.save();
         }
       } else {
-        console.log("tidak ada image");
         // guard the old image when new image not be inputed
         // item.image.forEach((img) => {
         //   item.image.push({ _id: img._id });

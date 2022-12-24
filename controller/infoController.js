@@ -4,10 +4,8 @@ const fs = require("fs-extra");
 const path = require("path");
 
 module.exports = {
-  get: async (req, res) => {},
   create: async (req, res) => {
     try {
-      console.log(req.body);
       const { infoName, type, isHightLight, description, item } = req.body;
 
       if (!req.file) {

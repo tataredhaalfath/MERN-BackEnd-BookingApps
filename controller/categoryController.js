@@ -3,8 +3,6 @@ const Category = require("../models/Category");
 module.exports = {
   create: async (req, res) => {
     try {
-      console.log(req.body);
-
       const category = new Category({
         ...req.body,
       });
@@ -29,7 +27,6 @@ module.exports = {
 
   update: async (req, res) => {
     try {
-      console.log(req.body);
       const updates = Object.keys(req.body);
       const allowedUpdated = ["categoryName"];
       const isValidOperation = updates.every((update) => {

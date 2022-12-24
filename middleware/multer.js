@@ -20,7 +20,7 @@ const uploadSingle = multer({
 
 const storageMultiple = multer.diskStorage({
   destination: function (req, file, cb) {
-    var dir = "public/images";
+    const dir = "public/images";
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir);
     }
@@ -41,7 +41,7 @@ const uploadMultiple = multer({
 // Check file Type
 function checkFileType(file, cb) {
   // Allowed ext
-  const fileTypes = /jpeg|jpg|png|gif/;
+  const fileTypes = /jpeg|jpg|png|gif|svg/;
   // Check ext
   const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
   // Check mime

@@ -18,10 +18,9 @@ module.exports = {
       return res.status(500).json({ message: error.message });
     }
   },
+  
   create: async (req, res) => {
     try {
-      console.log(req.body);
-
       const { featureName, qty, item } = req.body;
       if (!req.file) {
         return res.status(403).json({ message: "Image Not Found!" });
@@ -59,8 +58,6 @@ module.exports = {
 
   update: async (req, res) => {
     try {
-      console.log(req.body);
-
       const updates = Object.keys(req.body);
       const allowedUpdated = ["featureName", "qty", "item"];
       const isValidOperation = updates.every((update) => {
@@ -113,6 +110,7 @@ module.exports = {
       }
     }
   },
+
   delete: async (req, res) => {
     try {
       const id = req.params.id;

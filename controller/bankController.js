@@ -1,6 +1,7 @@
 const Bank = require("../models/Bank");
 const path = require("path");
 const fs = require("fs-extra");
+
 module.exports = {
   get: async (req, res) => {
     try {
@@ -12,10 +13,9 @@ module.exports = {
       res.status(500).json({ message: error.message });
     }
   },
+
   create: async (req, res) => {
     try {
-      console.log(req.body);
-
       const { bankName, accountHolder, accountNumber } = req.body;
 
       if (!req.file) {
@@ -39,8 +39,6 @@ module.exports = {
 
   update: async (req, res) => {
     try {
-      console.log(req.body);
-
       const updates = Object.keys(req.body);
       const allowedUpdated = ["bankName", "accountHolder", "accountNumber"];
       const isValidOperation = updates.every((update) => {
@@ -57,7 +55,7 @@ module.exports = {
       }
 
       if (req.file) {
-        await fs.unlink(path.join(`public/${bank.imageUrl}`)); // unlink old image if now image has been input
+        await fs.unlink(path.join(`public/${bank.imageUrl}`)); // unlink old image if new image has been input
         bank.imageUrl = `images/${req.file.filename}`;
       }
 
