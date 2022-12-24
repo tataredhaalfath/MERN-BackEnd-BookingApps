@@ -1,6 +1,8 @@
 const Item = require("../models/Item");
 const Category = require("../models/Category");
 const Image = require("../models/Image");
+const Info = require("../models/Info");
+const Feature = require("../models/Feature");
 const fs = require("fs-extra");
 const path = require("path");
 
@@ -15,6 +17,14 @@ module.exports = {
         .populate({
           path: "category",
           select: "id categoryName",
+        })
+        .populate({
+          path: "info",
+          select: "id infoName",
+        })
+        .populate({
+          path: "feature",
+          select: "id featureName",
         }); // populate to relation db
 
       items.length === 0
@@ -105,6 +115,14 @@ module.exports = {
         .populate({
           path: "image",
           select: "id imageUrl",
+        })
+        .populate({
+          path: "info",
+          select: "id infoName",
+        })
+        .populate({
+          path: "feature",
+          select: "id featureName",
         });
 
       if (!item) {
@@ -198,11 +216,35 @@ module.exports = {
         });
       }
 
+      function deleteInfo() {
+        item.info.forEach(async (itemInfo) => {
+          await Info.findOne(itemInfo._id)
+            .then((info) => {
+              fs.unlink(path.join(`public/${info.imageUrl}`));
+              info.remove();
+            })
+            .catch((err) => res.status(500).json({ message: err.message }));
+        });
+      }
+
+      function deleteFeature() {
+        item.feature.forEach(async (itemFeature) => {
+          await Feature.findByIdAndDelete(itemFeature._id)
+            .then((feature) => {
+              fs.unlink(path.join(`public/${feature.imageUrl}`));
+              feature.remove();
+            })
+            .catch((err) => res.status(500).json({ message: err.message }));
+        });
+      }
+
       // await Promise.all([item.remove(), deleteCategoryItem(), deleteImage()]);
       await item
         .remove()
         .then(() => deleteCategoryItem())
-        .then(() => deleteImage());
+        .then(() => deleteImage())
+        .then(() => deleteInfo())
+        .then(() => deleteFeature());
       return res.status(200).json({ message: "Item Has Been Deleted!" });
     } catch (error) {
       res.status(500).json({ message: error.message });
