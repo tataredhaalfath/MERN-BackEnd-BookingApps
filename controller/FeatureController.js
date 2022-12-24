@@ -47,9 +47,8 @@ module.exports = {
         await fs.unlink(path.join(`public/images/${req.file.filename}`));
       }
       switch (error.message) {
-        case "Item Not Found":
+        case "Item Not Found!":
           return res.status(404).json({ message: error.message });
-
         default:
           return res.status(500).json({ message: error.message });
       }

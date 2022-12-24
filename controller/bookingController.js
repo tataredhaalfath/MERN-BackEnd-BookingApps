@@ -118,8 +118,114 @@ module.exports = {
   },
 
   reject: async (req, res) => {
+    try {
+      const booking = await Booking.findOne({ _id: req.params.id });
+      if (!booking) {
+        throw Error("Booking Not Found!");
+      }
 
+      if (booking.payments.status == "Reject") {
+        throw Error("Booking Order Already Rejected!");
+      }
+
+      if (booking.payments.status === "Accept") {
+        throw Error("Booking Order Already Accept!");
+      }
+
+      booking.payments.status = "Reject";
+      await booking.save();
+
+      return res
+        .status(200)
+        .json({ message: "Booking Has Been Rejected", booking });
+    } catch (error) {
+      switch (error.message) {
+        case "Booking Not Found!":
+          res.status(404).json({ message: error.message });
+          break;
+        case "Booking Order Already Rejected!":
+        case "Booking Order Already Accept!":
+          return res.status(403).json({ message: error.message });
+        default:
+          return res.status(500).json({ message: error.message });
+      }
+    }
   },
 
-  delete: async (req, res) => {},
+  accept: async (req, res) => {
+    try {
+      const booking = await Booking.findOne({ _id: req.params.id });
+      if (!booking) {
+        throw Error("Booking Not Found!");
+      }
+
+      if (booking.payments.status == "Reject") {
+        throw Error("Booking Order Already Rejected!");
+      }
+
+      if (booking.payments.status === "Accept") {
+        throw Error("Booking Order Already Accept!");
+      }
+
+      const {
+        item: { _id, booked },
+      } = booking;
+
+      const item = await Item.findOne({ _id: _id });
+      if (!item) {
+        throw Error("Item Not Found!");
+      }
+
+      item.sumBooked += parseInt(booked);
+      await item.save();
+      booking.payments.status = "Accept";
+      await booking.save();
+
+      return res
+        .status(200)
+        .json({ message: "Booking Has Been Accepted", booking });
+    } catch (error) {
+      switch (error.message) {
+        case "Booking Not Found!":
+        case "Item Not Found!":
+          return res.status(404).json({ message: error.message });
+        case "Booking Order Already Rejected!":
+        case "Booking Order Already Accept!":
+          return res.status(403).json({ message: error.message });
+        default:
+          return res.status(500).json({ message: error.message });
+      }
+    }
+  },
+
+  delete: async (req, res) => {
+    try {
+      const booking = await Booking.findById(req.params.id);
+      if (!booking) {
+        throw Error("Booking Not Found!");
+      }
+
+      const {
+        payments: { status, proofPayment },
+      } = booking;
+
+      if (status != "Process") {
+        throw Error("Only can delete booking with status Process!");
+      }
+
+      await booking
+        .remove()
+        .then(() => fs.unlink(path.join(`public/${proofPayment}`)));
+      return res.json({ message: "Booking Deleted" });
+    } catch (error) {
+      switch (error.message) {
+        case "Booking Not Found!":
+          return res.status(404).json({ message: error.message });
+        case "Only can delete booking with status Process!":
+          return res.status(403).json({ message: error.message });
+        default:
+          return res.status(500).json({ message: error.message });
+      }
+    }
+  },
 };

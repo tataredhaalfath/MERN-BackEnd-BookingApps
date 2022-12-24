@@ -4,7 +4,8 @@ const bookingController = require("../controller/bookingController");
 const { uploadSingle } = require("../middleware/multer");
 
 router.post("/", uploadSingle, bookingController.create);
-router.patch("/:id", uploadSingle, bookingController.reject);
+router.put("/reject/:id", uploadSingle, bookingController.reject);
+router.put("/accept/:id", uploadSingle, bookingController.accept);
 router.delete("/:id", bookingController.delete);
 router.get("/", bookingController.get);
 router.get("/:id", bookingController.getDetail);
