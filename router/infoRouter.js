@@ -6,4 +6,5 @@ const { uploadSingle } = require("../middleware/multer");
 router.get("/", infoController.get);
 router.post("/", uploadSingle, infoController.create);
 router.patch("/:id", uploadSingle, infoController.update);
+router.delete("/:id", infoController.delete);
 module.exports = router;

@@ -79,7 +79,7 @@ module.exports = {
       }
 
       const info = await Info.findById(req.params.id);
-      
+
       if (!info) {
         throw Error("Info Not Found!");
       }
@@ -120,5 +120,36 @@ module.exports = {
     }
   },
 
-  delete: async (req, res) => {},
+  delete: async (req, res) => {
+    try {
+      const id = req.params.id;
+      const info = await Info.findOne({ _id: id });
+      if (!info) {
+        return res.status(404).json({ message: "Info Not Found!" });
+      }
+
+      const item = await Item.findOne({ _id: info.item });
+      if (!item) {
+        return res.status(404).json({ message: "Item Not Found!" });
+      }
+
+      function deleteItemInfo() {
+        item.info.forEach(async (itemInfo) => {
+          if (itemInfo._id.toString() == info._id.toString()) {
+            item.info.pull({ _id: info._id });
+            await item.save();
+          }
+        });
+      }
+
+      await info
+        .remove()
+        .then(() => deleteItemInfo())
+        .then(() => fs.unlink(path.join(`public/${info.imageUrl}`)));
+
+      return res.status(200).json({ message: "Info Has Been Deleted!" });
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  },
 };
