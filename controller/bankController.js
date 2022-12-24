@@ -10,7 +10,7 @@ module.exports = {
         ? res.status(404).json({ message: "Data Bank Not Found" })
         : res.json(banks);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      return res.status(500).json({ message: error.message });
     }
   },
 
@@ -33,7 +33,7 @@ module.exports = {
       return res.status(201).json({ bank });
     } catch (error) {
       await fs.unlink(path.join(`public/images/${req.file.filename}`)); // unlink image file when data doesn input into database
-      res.status(500).json({ message: error.message });
+      return res.status(500).json({ message: error.message });
     }
   },
 
@@ -68,11 +68,11 @@ module.exports = {
     } catch (error) {
       await fs.unlink(path.join(`public/images/${req.file.filename}`)); // unlink image file when data doesn input into database
       if (error.message === "Bank Not Found!") {
-        res.status(404).json({ message: error.message });
+        return res.status(404).json({ message: error.message });
       } else if (error.message === "Invalid Key Parameter") {
-        res.status(403).json({ message: error.message });
+        return  res.status(403).json({ message: error.message });
       } else {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
       }
     }
   },
@@ -89,7 +89,7 @@ module.exports = {
 
       return res.status(200).json({ message: "Bank Has Been Deleted!" });
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      return res.status(500).json({ message: error.message });
     }
   },
 };

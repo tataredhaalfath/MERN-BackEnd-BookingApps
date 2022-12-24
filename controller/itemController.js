@@ -27,7 +27,7 @@ module.exports = {
           select: "id featureName",
         }); // populate to relation db
 
-      items.length === 0
+      return items.length === 0
         ? res.status(404).json({ message: "Data Item Is Empty" })
         : res.json({ items });
     } catch (error) {
@@ -83,7 +83,7 @@ module.exports = {
         await fs.unlink(path.join(`public/images/${file.filename}`));
       }); // delete image inpuited when throwing error
 
-      res.status(500).json({ message: error.message });
+      return res.status(500).json({ message: error.message });
     }
   },
 
@@ -169,11 +169,11 @@ module.exports = {
       }); // delete image inpuited when throwing error
 
       if (error.message === "Item Not Found") {
-        res.status(400).json({ message: error.message });
+        return res.status(400).json({ message: error.message });
       } else if (error.message === "Invalid Key Parameter!") {
-        res.status(403).json({ message: error.message });
+        return res.status(403).json({ message: error.message });
       } else {
-        res.status(500).json({ message: error.message });
+        return res.status(500).json({ message: error.message });
       }
     }
   },
@@ -247,7 +247,7 @@ module.exports = {
         .then(() => deleteFeature());
       return res.status(200).json({ message: "Item Has Been Deleted!" });
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      return res.status(500).json({ message: error.message });
     }
   },
 };

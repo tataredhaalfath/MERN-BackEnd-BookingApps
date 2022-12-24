@@ -8,20 +8,20 @@ module.exports = {
       });
 
       await category.save();
-      res.status(201).json(category);
+      return res.status(201).json(category);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      return res.status(500).json({ message: error.message });
     }
   },
 
   get: async (req, res) => {
     try {
       const categories = await Category.find();
-      categories.length === 0
+      return categories.length === 0
         ? res.status(404).json({ message: "Data Category is Empty" })
         : res.status(200).json(categories);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      return res.status(500).json({ message: error.message });
     }
   },
 
@@ -50,7 +50,7 @@ module.exports = {
 
       return res.status(200).json(category);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      return res.status(500).json({ message: error.message });
     }
   },
 
@@ -63,7 +63,7 @@ module.exports = {
         : res.status(404).json({ message: "Category Not Found!" });
       return res.status(200).json(category);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      return res.status(500).json({ message: error.message });
     }
   },
 };

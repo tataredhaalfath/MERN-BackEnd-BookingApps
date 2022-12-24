@@ -11,7 +11,7 @@ module.exports = {
         select: "_id itemName",
       });
 
-      info.length === 0
+      return info.length === 0
         ? res.status(404).json({ message: "Data Info Is Empty!" })
         : res.json({ info });
     } catch (error) {
@@ -45,7 +45,7 @@ module.exports = {
       await itemDB.save();
 
       await info.save();
-      res.json({ info });
+      return res.json({ info });
     } catch (error) {
       if (req.file) {
         fs.unlink(path.join(`public/images/${req.file.filename}`));
@@ -149,7 +149,7 @@ module.exports = {
 
       return res.status(200).json({ message: "Info Has Been Deleted!" });
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      return res.status(500).json({ message: error.message });
     }
   },
 };
