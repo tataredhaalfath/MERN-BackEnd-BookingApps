@@ -6,8 +6,8 @@ module.exports = {
   get: async (req, res) => {
     try {
       const banks = await Bank.find();
-      banks.length === 0
-        ? res.status(404).json({ message: "Data Bank Not Found" })
+      return banks.length === 0
+        ? res.status(404).json({ message: "Data Bank Is Empty!" })
         : res.json(banks);
     } catch (error) {
       return res.status(500).json({ message: error.message });

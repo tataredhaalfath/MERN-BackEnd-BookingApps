@@ -45,7 +45,7 @@ module.exports = {
       }
 
       let total = item.itemPrice * itemBooked;
-      let tax = total * 0.10;
+      let tax = total * 0.1;
 
       const invoice = Math.floor(1000000 + Math.random() * 90000);
 
@@ -93,16 +93,33 @@ module.exports = {
     }
   },
 
-  get: async(req,res)=>{
+  get: async (req, res) => {
+    try {
+      const booking = await Booking.find();
+      return booking.length === 0
+        ? res.status(404).json({ message: "Data Booking Is Empty!" })
+        : res.json(booking);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  },
+
+  getDetail: async (req, res) => {
+    try {
+      const booking = await Booking.findById(req.params.id).populate(
+        "customer"
+      );
+      return booking.length === 0
+        ? res.status(404).json({ message: "Data Booking Is Empty!" })
+        : res.json(booking);
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  },
+
+  reject: async (req, res) => {
 
   },
 
-  update:async(req,res)=>{
-
-  },
-
-  delete:async(req,res)=>{
-
-  }
-
+  delete: async (req, res) => {},
 };
