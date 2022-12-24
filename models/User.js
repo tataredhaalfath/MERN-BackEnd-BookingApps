@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please Input Email!"],
       trim: true,
+      unique:true,
       lowercase: true,
       validate(value) {
         if (!validator.isEmail(value)) {
@@ -39,6 +40,7 @@ const userSchema = new mongoose.Schema(
     },
     phoneNumber: {
       type: String,
+      unique:true,
       required: [true, "Please Input Phone Number!"],
       validate(value) {
         if (this.password !== this.passwordConfirm) {

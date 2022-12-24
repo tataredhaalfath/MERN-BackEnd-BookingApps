@@ -7,7 +7,7 @@ const customerSchema = new mongoose.Schema({
     trim: true,
     required: [true, "Please Input First Name!"],
   },
-  laseName: {
+  lastName: {
     type: String,
     trim: true,
     required: [true, "Please Input Lase Name!"],
@@ -24,7 +24,7 @@ const customerSchema = new mongoose.Schema({
     },
   },
   phoneNumber: {
-    type: Strng,
+    type: String,
     required: [true, "Please Input Phone Number!"],
   },
 });

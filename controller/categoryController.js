@@ -40,17 +40,21 @@ module.exports = {
       }
 
       const category = await Category.findById(req.params.id);
-      category
-        ? updates.forEach((update) => {
-            category[update] = req.body[update];
-          }) //update category
-        : res.status(404).json({ message: "Category Not Found!" });
+      if (!category) {
+        throw Error("Category Not Found!");
+      }
+      updates.forEach((update) => {
+        category[update] = req.body[update];
+      }); //update category
 
       await category.save();
-
       return res.status(200).json(category);
     } catch (error) {
-      return res.status(500).json({ message: error.message });
+      if (error.message === "Category Not Found!") {
+        return res.status(404).json({ message: error.message });
+      } else {
+        return res.status(500).json({ message: error.message });
+      }
     }
   },
 
@@ -58,10 +62,9 @@ module.exports = {
     try {
       const category = await Category.findByIdAndDelete(req.params.id);
 
-      category
+      return category
         ? res.status(200).json({ message: "Category Deleted" })
         : res.status(404).json({ message: "Category Not Found!" });
-      return res.status(200).json(category);
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
