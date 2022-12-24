@@ -4,6 +4,21 @@ const fs = require("fs-extra");
 const path = require("path");
 
 module.exports = {
+  get: async (req, res) => {
+    try {
+      const info = await Info.find().populate({
+        path: "item",
+        select: "_id itemName",
+      });
+
+      info.length === 0
+        ? res.status(404).json({ message: "Data Info Is Empty!" })
+        : res.json({ info });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  },
+
   create: async (req, res) => {
     try {
       const { infoName, type, isHightLight, description, item } = req.body;
