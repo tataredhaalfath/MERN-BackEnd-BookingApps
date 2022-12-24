@@ -59,6 +59,66 @@ module.exports = {
       }
     }
   },
-  update: async (req, res) => {},
+
+  update: async (req, res) => {
+    try {
+      const updates = Object.keys(req.body);
+      const allowedUpdated = [
+        "infoName",
+        "type",
+        "isHightLight",
+        "description",
+        "item",
+      ];
+      const isValidOperation = updates.every((update) => {
+        return allowedUpdated.includes(update);
+      });
+
+      if (!isValidOperation) {
+        throw Error("Invalid Key Parameter");
+      }
+
+      const info = await Info.findById(req.params.id);
+      
+      if (!info) {
+        throw Error("Info Not Found!");
+      }
+      const itemDB = await Item.findById(req.body.item);
+      if (!itemDB) {
+        throw Error("Item Not Found!");
+      }
+
+      if (req.file) {
+        await fs.unlink(path.join(`public/${info.imageUrl}`)); // unlink old image if now image has been input
+        info.imageUrl = `images/${req.file.filename}`;
+      }
+
+      updates.forEach((update) => {
+        info[update] = req.body[update];
+      });
+
+      await info.save();
+      return res.json(info);
+    } catch (error) {
+      if (req.file) {
+        await fs.unlink(path.join(`public/images/${req.file.filename}`)); // unlink image file when data doesn input into database
+      }
+      switch (error.message) {
+        case "Info Not Found!":
+          res.status(404).json({ message: error.message });
+          break;
+        case "Item Not Found!":
+          res.status(404).json({ message: error.message });
+          break;
+        case "Invalid Key Parameter":
+          res.status(403).json({ message: error.message });
+          break;
+        default:
+          res.status(500).json({ message: error.message });
+          break;
+      }
+    }
+  },
+
   delete: async (req, res) => {},
 };
