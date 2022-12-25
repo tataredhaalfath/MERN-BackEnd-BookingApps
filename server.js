@@ -18,6 +18,7 @@ const infoRouter = require("./router/infoRouter");
 const customerRouter = require("./router/customerRouter");
 const bookingRouter = require("./router/bookingRouter");
 const userRouter = require("./router/userRouter");
+const dashboardRouter = require("./router/dashboardRouter");
 
 // setting cors & morgan
 app.use(cors());
@@ -59,6 +60,7 @@ app.use("/api/v1/item/info", infoRouter);
 app.use("/api/v1/customer", customerRouter);
 app.use("/api/v1/booking", bookingRouter);
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1/dashboard", dashboardRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
