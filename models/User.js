@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please Input Email!"],
       trim: true,
-      unique:true,
+      unique: true,
       lowercase: true,
       validate(value) {
         if (!validator.isEmail(value)) {
@@ -47,7 +47,7 @@ const userSchema = new mongoose.Schema(
     },
     phoneNumber: {
       type: String,
-      unique:true,
+      unique: true,
       required: [true, "Please Input Phone Number!"],
     },
     tokens: [
@@ -62,13 +62,13 @@ const userSchema = new mongoose.Schema(
 );
 
 // generate token jwt
-userSchema.method.generateAuthToken = async () => {
+userSchema.methods.generateAuthToken = async function() {
   const user = this;
   const token = jwt.sign({ _id: user._id.toString() }, "BookingApp", {
     expiresIn: "1d",
   });
 
-  user.tokens = user.token.concat({ token });
+  user.tokens = user.tokens.concat({ token });
   await user.save();
   return token;
 };
@@ -86,8 +86,8 @@ userSchema.methods.toJSON = function () {
 };
 
 // login check
-userSchema.static.findbyCredentials = async (email, password) => {
-  const user = await User.findByOne({ email });
+userSchema.statics.findbyCredentials = async (email, password) => {
+  const user = await User.findOne({ email });
   if (!user) {
     throw Error("User Not Found!");
   }
@@ -114,4 +114,6 @@ userSchema.pre("save", async function (next) {
 
   next();
 });
-module.exports = mongoose.model("User", userSchema);
+
+const User = mongoose.model("User", userSchema);
+module.exports = User;

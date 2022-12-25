@@ -110,6 +110,11 @@ module.exports = {
         }
       }
 
+      if (req.body.password) {
+        if (req.body.password !== req.body.passwordConfirm) {
+          throw Error("Password not same with Password Confirm!");
+        }
+      }
       updates.forEach((update) => {
         user[update] = req.body[update];
       }); //update user
@@ -140,6 +145,45 @@ module.exports = {
       return user
         ? res.status(200).json({ message: "User Deleted" })
         : res.status(404).json({ message: "User Not Found!" });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  },
+
+  logIn: async (req, res) => {
+    try {
+      const user = await User.findbyCredentials(
+        req.body.email,
+        req.body.password
+      );
+      const token = await user.generateAuthToken();
+      const username = user.userName;
+
+      return res.status(200).json({ username, token });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  },
+
+  logOut: async (req, res) => {
+    try {
+      req.user.tokens = req.user.tokens.filter(
+        (token) => token.token !== req.user.token
+      );
+      
+      await req.user.save();
+      return res.status(200).json({ message: "Logout Success" });
+    } catch (error) {
+      return res.status(500).json({ message: error.message });
+    }
+  },
+
+  logOutAll: async (req, res) => {
+    try {
+      req.user.tokens = [];
+
+      await req.user.save();
+      return res.status(200).json({ message: "Logout Success" });
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
