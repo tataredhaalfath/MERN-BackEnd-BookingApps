@@ -21,8 +21,6 @@ module.exports = {
         imageUrl: `images/${req.file.filename}`,
       });
 
-      console.log("itemnya", item);
-      console.log("imagenya", imageSave);
       item.image.push({ _id: imageSave._id });
       item.save();
       return res.status(201).json(imageSave);

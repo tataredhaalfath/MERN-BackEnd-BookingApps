@@ -133,6 +133,7 @@ module.exports = {
       }
 
       booking.payments.status = "Reject";
+      booking.proofBy = req.user._id;
       await booking.save();
 
       return res
@@ -178,7 +179,9 @@ module.exports = {
 
       item.sumBooked += parseInt(booked);
       await item.save();
+
       booking.payments.status = "Accept";
+      booking.proofBy = req.user._id;
       await booking.save();
 
       return res

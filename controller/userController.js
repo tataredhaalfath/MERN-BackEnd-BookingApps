@@ -170,7 +170,7 @@ module.exports = {
       req.user.tokens = req.user.tokens.filter(
         (token) => token.token !== req.user.token
       );
-      
+
       await req.user.save();
       return res.status(200).json({ message: "Logout Success" });
     } catch (error) {
@@ -187,5 +187,9 @@ module.exports = {
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }
+  },
+
+  detailUser: async (req, res) => {
+    return res.status(200).json(req.user);
   },
 };
