@@ -19,7 +19,7 @@ module.exports = {
       const categories = await Category.find();
       return categories.length === 0
         ? res.status(404).json({ message: "Data Category is Empty" })
-        : res.status(200).json(categories);
+        : res.status(200).json({categories});
     } catch (error) {
       return res.status(500).json({ message: error.message });
     }

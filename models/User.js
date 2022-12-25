@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 const userSchema = new mongoose.Schema(
   {
-    username: {
+    userName: {
       type: String,
       unique: true,
       trim: true,
@@ -36,17 +36,19 @@ const userSchema = new mongoose.Schema(
     },
     passwordConfirm: {
       type: String,
+      minlength: 5,
+      trim: true,
       required: [true, "Please Input Password Confirm!"],
-    },
-    phoneNumber: {
-      type: String,
-      unique:true,
-      required: [true, "Please Input Phone Number!"],
       validate(value) {
         if (this.password !== this.passwordConfirm) {
           return true;
         }
       },
+    },
+    phoneNumber: {
+      type: String,
+      unique:true,
+      required: [true, "Please Input Phone Number!"],
     },
     tokens: [
       {
@@ -74,7 +76,7 @@ userSchema.method.generateAuthToken = async () => {
 // mengamankan agar data password, passwordConfirm dan token tidak tergenerate saat table user dipanggil
 userSchema.methods.toJSON = function () {
   const user = this;
-  const userObject = user.toObject;
+  const userObject = user.toObject();
 
   delete userObject.password;
   delete userObject.passwordConfirm;
@@ -106,7 +108,7 @@ userSchema.pre("save", async function (next) {
     user.password = await bcrypt.hash(user.password, 8);
   }
 
-  if (user.isMondified("passwordConfirm")) {
+  if (user.isModified("passwordConfirm")) {
     user.passwordConfirm = await bcrypt.hash(user.passwordConfirm, 8);
   }
 

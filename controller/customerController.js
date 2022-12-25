@@ -19,10 +19,6 @@ module.exports = {
         ...req.body,
       });
 
-      // const emailExist = await Customer.findOne({ email: req.body.email });
-      // if (emailExist) {
-      //   throw Error("Email Already Exist!");
-      // }
       await customer.save();
       return res.status(201).json(customer);
     } catch (error) {
