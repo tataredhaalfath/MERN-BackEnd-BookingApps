@@ -3,6 +3,7 @@ const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
 const path = require("path");
+require('dotenv').config()
 
 const app = express();
 // connection to MongoDB
@@ -19,6 +20,7 @@ const customerRouter = require("./router/customerRouter");
 const bookingRouter = require("./router/bookingRouter");
 const userRouter = require("./router/userRouter");
 const dashboardRouter = require("./router/dashboardRouter");
+const homeRouter = require("./router/homeRouter");
 
 // setting cors & morgan
 app.use(cors());
@@ -45,7 +47,7 @@ app.use(function (req, res, next) {
 // public file
 app.use(express.static(path.join(__dirname, "public")));
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
@@ -61,6 +63,7 @@ app.use("/api/v1/customer", customerRouter);
 app.use("/api/v1/booking", bookingRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/dashboard", dashboardRouter);
+app.use("/api/v1/client", homeRouter);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);

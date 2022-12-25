@@ -1,13 +1,18 @@
 const mongoose = require("mongoose");
 
+const { DB_HOST, DB_PORT, DB_NAME } = process.env;
+
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect("mongodb://localhost:27017/bookingDB", {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
-    });
+    const conn = await mongoose.connect(
+      `mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`,
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+        useFindAndModify: false,
+      }
+    );
 
     console.log(`MongoDB Connected :  ${conn.connection.host}`);
   } catch (error) {

@@ -8,6 +8,7 @@ const infoSchema = mongoose.Schema({
   },
   type: {
     type: String,
+    enum: ["Testimony","NearBy"],
     required: [true, "Please Input Info Type!"],
   },
   imageUrl: {
